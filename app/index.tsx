@@ -23,7 +23,7 @@ export default function Login() {
               resizeMode="stretch"
             />
 
-            <Text className="text-3xl font-semibold text-gray-800 mb-6 text-center">Seja bem-vindo</Text>
+            <Text className="text-3xl font-semibold text-[#090A12] mb-6 text-center">Seja bem-vindo</Text>
 
             <TextInput
               className="w-full bg-white p-[14px] mb-4 rounded-xl border border-gray-200 shadow-sm"
@@ -44,7 +44,7 @@ export default function Login() {
 
             <Link asChild href="/page1">
             <TouchableOpacity
-              className="w-full bg-[#5991A5] p-[12px] rounded-full shadow-lg mb-4"
+              className="w-full bg-[#3E4684] p-[12px] rounded-full shadow-lg mb-4"
             >
               <Text className="text-center text-white font-semibold text-lg">Entre</Text>
             </TouchableOpacity>
