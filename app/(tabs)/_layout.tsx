@@ -1,23 +1,25 @@
 // app/(tabs)/_layout.tsx
 import { Tabs } from "expo-router";
-import { FontAwesome } from "@expo/vector-icons"; // Importa los íconos
+import { FontAwesome } from "@expo/vector-icons";
 
 export default function TabsLayout() {
   return (
     <Tabs
       screenOptions={{
         tabBarStyle: { 
-          backgroundColor: "#3E4684",
-          margin: 8,
-          borderRadius: 50,
+          backgroundColor: "#FEFDFF",
+          //backgroundColor: "#3E4684",
+          //margin: 8,
+          //borderRadius: 50,
         },
-        tabBarActiveTintColor: "#FFFFFF", // Color blanco para íconos activos
-        tabBarInactiveTintColor: "#B0B0B0", // Color gris claro para íconos inactivos
+        tabBarActiveTintColor: "#181818",
+        tabBarInactiveTintColor: "#BBBBBB",
         tabBarItemStyle: {
-          marginVertical: 4, // Márgenes superior e inferior para cada ítem
+          marginVertical: 5,
         },
         tabBarLabelStyle: {
-          fontSize: 11, // Tamaño del texto
+          fontSize: 11,
+          fontWeight: 'bold'
         },
       }}
     >
@@ -27,7 +29,7 @@ export default function TabsLayout() {
           title: "Reservas",
           headerShown: false,
           tabBarIcon: ({ color, size }) => (
-            <FontAwesome name="calendar" size={20} color={color} /> // Tamaño específico
+            <FontAwesome name="calendar" size={20} color={color} />
           ),
         }}
       />
@@ -36,7 +38,7 @@ export default function TabsLayout() {
         options={{
           title: "Atendidos",
           tabBarIcon: ({ color, size }) => (
-            <FontAwesome name="check-circle" size={20} color={color} /> // Tamaño específico
+            <FontAwesome name="check-circle" size={20} color={color} />
           ),
         }}
       />

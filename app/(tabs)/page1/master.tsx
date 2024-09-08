@@ -1,95 +1,94 @@
-import { FontAwesome } from '@expo/vector-icons';
-import { View, Text, TouchableWithoutFeedback, FlatList, ActivityIndicator } from 'react-native';
+import { View, FlatList, ActivityIndicator, TextInput, Text } from 'react-native';
 import { useRouter } from 'expo-router';
-import React, { useState, useCallback } from 'react';
+import React, { useState } from 'react';
+import Citas from '../../../components/Citas';
+import { SearchIcon } from '../../../components/Icons';
 
-const INITIAL_DATA = [...Array(30).keys()].map(index => ({
+const INITIAL_DATA = [...Array(5).keys()].map(index => ({
     id: index,
     hour: '09:00',
     category: index === 0 ? 'Oncología' : 'General',
     doctor: 'Doctora Ana María Rivera',
     date: `Miércoles ${(index + 1) * 2} de Septiembre 2024`,
+    presencial: index % 3 === 0,
+    fullColor: index % 2 === 0
 }));
 
+interface ListItem {
+    id: number;
+    hour: string;
+    category: string;
+    doctor: string;
+    date: string;
+    presencial: boolean;
+    fullColor: boolean;
+}
+
 export default function Page1() {
-    const router = useRouter(); // Hook para navegación
+    const router = useRouter();
     const [data, setData] = useState(INITIAL_DATA);
+    const [filteredData, setFilteredData] = useState(INITIAL_DATA);
     const [loading, setLoading] = useState(false);
     const [page, setPage] = useState(1);
-    const [hasMore, setHasMore] = useState(true); // Para controlar si hay más datos
+    const [hasMore, setHasMore] = useState(true); 
+    const [searchTerm, setSearchTerm] = useState('');
 
-    interface ListItem {
-        id: number;
-        hour: string;
-        category: string;
-        doctor: string;
-        date: string;
-      }
-
-    const loadMoreData = useCallback(() => {
-        if (loading || !hasMore) return;
-        setLoading(true);
-        setTimeout(() => {
-            // Simula la carga de más datos
-            const newData = [...Array(30).keys()].map(index => ({
-                id: index + page * 30,
-                hour: '09:00',
-                category: 'General',
-                doctor: 'Doctora Ana María Rivera',
-                date: `Miércoles ${(index + 1) * 2 + page * 30} de Septiembre 2024`,
-            }));
-            setData(prevData => {
-                const allData = [...prevData, ...newData];
-                // Controla si se ha alcanzado el límite de datos
-                if (allData.length >= 30) {
-                    setHasMore(false); // No hay más datos que cargar
-                    return allData.slice(0, 30); // Limita la cantidad de datos
-                }
-                return allData;
-            });
-            setLoading(false);
-            setPage(prevPage => prevPage + 1);
-        }, 1000);
-    }, [loading, page, hasMore]);
+    // Función para filtrar los datos
+    const filterData = (text: string) => {
+        setSearchTerm(text);
+        const lowercasedText = text.toLowerCase();
+        const filtered = INITIAL_DATA.filter(item =>
+            item.hour.toLowerCase().includes(lowercasedText) ||
+            item.category.toLowerCase().includes(lowercasedText) ||
+            item.doctor.toLowerCase().includes(lowercasedText) ||
+            item.date.toLowerCase().includes(lowercasedText)
+        );
+        setFilteredData(filtered);
+    };
 
     const renderItem = ({ item }: { item: ListItem }) => (
-        <TouchableWithoutFeedback
-            onPress={() => {
-                router.push('/(tabs)/page1/detail');
-            }}>
-            <View className="flex-row items-start p-2">
-                {/* Hora */}
-                <Text className="text-gray-700 font-bold text-lg">{item.hour}</Text>
-
-                {/* Línea vertical y Círculo */}
-                <View className="flex-row items-center ml-4">
-                    {/* Columna con círculo y línea */}
-                    <View className="flex items-center">
-                        {/* Círculo con animación de pulsación */}
-                        <View className={`w-5 h-5 ${item.category === 'Oncología' ? 'bg-[#3E4684]' : 'bg-[#FFA71A]'} rounded-full mb-1 animate-pulse`} />
-                        {/* Línea vertical descendente */}
-                        <View className="w-[2px] h-full bg-gray-400 flex-1" />
-                    </View>
-                </View>
-
-                {/* Información de la cita */}
-                <View className="ml-4">
-                    <Text className="text-blue-500 font-bold text-base">{item.category}</Text>
-                    <Text className="text-gray-700">{item.doctor}</Text>
-                    <Text className="text-gray-500">{item.date}</Text>
-                </View>
-            </View>
-        </TouchableWithoutFeedback>
+        <Citas
+            hour={item.hour}
+            category={item.category}
+            doctor={item.doctor}
+            date={item.date}
+            presencial={item.presencial}
+            fullColor={item.fullColor}
+            onPress={() => router.push('/(tabs)/page1/detail')}
+        />
     );
 
     return (
-        <FlatList
-            data={data}
-            renderItem={renderItem}
-            keyExtractor={item => item.id.toString()}
-            onEndReached={loadMoreData}
-            onEndReachedThreshold={0.5} // Carga más datos cuando el usuario llega al 50% del final de la lista
-            ListFooterComponent={loading && hasMore ? <ActivityIndicator size="large" color="#0000ff" /> : null}
-        />
+        <View className='flex-1 bg-[#FEFDFF]'>
+            <View className='flex-row items-center p-2 mt-3'>
+                <TextInput
+                    placeholder='Buscar...'
+                    className='bg-[#FEFDFF]'
+                    value={searchTerm}
+                    onChangeText={filterData}
+                    style={{ 
+                        flex: 1,
+                        marginLeft: 1,
+                        borderColor: 'gray',
+                        borderWidth: 1,
+                        borderRadius: 25,
+                        paddingHorizontal: 8,
+                        paddingVertical: 6,
+                        paddingStart:15
+                    }}
+                />
+            </View>
+            <View>
+                <Text className='ml-4'></Text>
+            </View>
+            <FlatList
+                data={filteredData}
+                renderItem={renderItem}
+                keyExtractor={item => item.id.toString()}
+                onEndReached={() => {}}
+                onEndReachedThreshold={0.5}
+                ListFooterComponent={loading && hasMore ? <ActivityIndicator size="large" color="#0000ff" /> : null}
+            />
+        </View>
     );
 }

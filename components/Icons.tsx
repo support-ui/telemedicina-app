@@ -8,3 +8,9 @@ export const HomeIcon = ({ color }: { color: string }) => (
 export const InfoIcon = ({ color }: { color: string }) => (
   <Ionicons name="information-circle" size={24} color={color} />
 );
+export const VideoIcon = ({ color }: { color: string }) => (
+  <Ionicons name="videocam-outline" size={24} color={color} />
+);
+export const SearchIcon = ({ color }: { color: string }) => (
+  <Ionicons name="videocam-outline" size={24} color={color} />
+);
