@@ -2,12 +2,16 @@
 import { useState } from 'react';
 import { Image, Text, TextInput, TouchableOpacity, View, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard, ScrollView } from 'react-native';
 import { Link, useRouter } from "expo-router";
+import { useFonts } from 'expo-font';
 
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const router = useRouter();
-
+  const [fontsLoaded] = useFonts({
+    Ubuntu:require("../assets/fonts/ubuntu/Ubuntu-Regular.ttf")
+  })
+  
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -23,9 +27,10 @@ export default function Login() {
               resizeMode="stretch"
             />
 
-            <Text className="text-3xl font-semibold text-[#090A12] mb-6 text-center">Seja bem-vindo</Text>
+            <Text className="text-3xl font-semibold text-[#090A12] mb-6 text-center" style={{fontFamily:"Ubuntu"}}>Seja bem-vindo</Text>
 
             <TextInput
+              style={{fontFamily:"Ubuntu"}}
               className="w-full bg-white p-[14px] mb-4 rounded-xl border border-gray-200 shadow-sm"
               placeholder="Usuário"
               keyboardType="default"
@@ -35,6 +40,7 @@ export default function Login() {
             />
 
             <TextInput
+              style={{fontFamily:"Ubuntu"}}
               className="w-full bg-white p-[14px] mb-6 rounded-xl border border-gray-200 shadow-sm"
               placeholder="Senha"
               secureTextEntry
@@ -46,14 +52,14 @@ export default function Login() {
             <TouchableOpacity
               className="w-full bg-[#3E4684] p-[12px] rounded-full shadow-lg mb-4"
             >
-              <Text className="text-center text-white font-semibold text-lg">Entre</Text>
+              <Text style={{fontFamily:"Ubuntu"}} className="text-center text-white font-semibold text-lg">Entre</Text>
             </TouchableOpacity>
             </Link>
             
 
             <View className="flex-row justify-between">
               <TouchableOpacity>
-                <Text className="text-blue-600 text-center">Registrar</Text>
+                <Text className="text-blue-600 text-center" style={{fontFamily:"Ubuntu"}}>Registrar</Text>
               </TouchableOpacity>
             </View>
           </View>

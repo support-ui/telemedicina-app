@@ -3,6 +3,7 @@ import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import Citas from '../../../components/Citas';
 import { SearchIcon } from '../../../components/Icons';
+import { useFonts } from 'expo-font';
 
 const INITIAL_DATA = [...Array(5).keys()].map(index => ({
     id: index,
@@ -32,7 +33,9 @@ export default function Page1() {
     const [page, setPage] = useState(1);
     const [hasMore, setHasMore] = useState(true); 
     const [searchTerm, setSearchTerm] = useState('');
-
+    const [fontsLoaded] = useFonts({
+        Ubuntu:require("../../../assets/fonts/ubuntu/Ubuntu-Regular.ttf")
+      })
     // Función para filtrar los datos
     const filterData = (text: string) => {
         setSearchTerm(text);
@@ -74,7 +77,8 @@ export default function Page1() {
                         borderRadius: 25,
                         paddingHorizontal: 8,
                         paddingVertical: 6,
-                        paddingStart:15
+                        paddingStart:15,
+                        fontFamily:"Ubuntu"
                     }}
                 />
             </View>
